@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<addon id="script.module.remotekodi" name="Remote Monitor" provider-name="Birger Jesch" version="0.0.1">
+    <requires>
+        <import addon="xbmc.python" version="2.25.0"/>
+        <import addon="xbmc.json" version="7.0.0"/>
+    </requires>
+    <extension point="xbmc.python.script" library="default.py">
+            <provides></provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en_GB">A guard that collects informations about running remote instances of Kodi</summary>
+        <description lang="en_GB">Collect and display informations about your running instances of Kodi in your household. See what your children do with their kodi devices. Power their devices down or send individual messages to your clients.</description>
+        <disclaimer lang="en_GB">Use at your own risk. Inform your clients about control them.</disclaimer>
+        <platform>all</platform>
+        <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
+        <website></website>
+        <source></source>
+        <news>
+0.0.1 - Initial commit
+        </news>
+        <assets>
+            <icon></icon>
+            <fanart></fanart>
+            <screenshot></screenshot>
+        </assets>
+        <email>birger.jesch@gmail.com</email>
+    </extension>
+</addon>

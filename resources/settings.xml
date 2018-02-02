@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<settings>
+    <setting id="host_1_enabled" type="bool" label="30010" default="false" />
+    <setting id="host_1_name" type="text" label="30021" default="" enable="eq(-1,true)" visible="eq(-1,true)" />
+    <setting id="host_1_port" type="text" label="30022" default="8080" enable="eq(-2,true)" visible="eq(-2,true)" />
+    <setting id="host_1_user" type="text" label="30023" default="" enable="eq(-3,true)" visible="eq(-3,true)" />
+    <setting id="host_1_passwd" option="hidden" type="text" label="30024" default="" enable="eq(-4,true)" visible="eq(-4,true)" />
+    <setting type="sep" visible="eq(-5,true)" />
+
+    <setting id="host_2_enabled" type="bool" label="30011" default="false" />
+    <setting id="host_2_name" type="text" label="30021" default="" enable="eq(-1,true)" visible="eq(-1,true)" />
+    <setting id="host_2_port" type="text" label="30022" default="8080" enable="eq(-2,true)" visible="eq(-2,true)" />
+    <setting id="host_2_user" type="text" label="30023" default="" enable="eq(-3,true)" visible="eq(-3,true)" />
+    <setting id="host_2_passwd" option="hidden" type="text" label="30024" default="" enable="eq(-4,true)" visible="eq(-4,true)" />
+    <setting type="sep" visible="eq(-5,true)" />
+
+    <setting id="host_3_enabled" type="bool" label="30012" default="false" />
+    <setting id="host_3_name" type="text" label="30021" default="" enable="eq(-1,true)" visible="eq(-1,true)" />
+    <setting id="host_3_port" type="text" label="30022" default="8080" enable="eq(-2,true)" visible="eq(-2,true)" />
+    <setting id="host_3_user" type="text" label="30023" default="" enable="eq(-3,true)" visible="eq(-3,true)" />
+    <setting id="host_3_passwd" option="hidden" type="text" label="30024" default="" enable="eq(-4,true)" visible="eq(-4,true)" />
+    <setting type="sep" visible="eq(-5,true)" />
+
+    <setting id="host_4_enabled" type="bool" label="30013" default="false" />
+    <setting id="host_4_name" type="text" label="30021" default="" enable="eq(-1,true)" visible="eq(-1,true)" />
+    <setting id="host_4_port" type="text" label="30022" default="8080" enable="eq(-2,true)" visible="eq(-2,true)" />
+    <setting id="host_4_user" type="text" label="30023" default="" enable="eq(-3,true)" visible="eq(-3,true)" />
+    <setting id="host_4_passwd" option="hidden" type="text" label="30024" default="" enable="eq(-4,true)" visible="eq(-4,true)" />
+    <setting type="sep" visible="eq(-5,true)" />
+
+    <setting id="host_5_enabled" type="bool" label="30014" default="false" />
+    <setting id="host_5_name" type="text" label="30021" default="" enable="eq(-1,true)" visible="eq(-1,true)" />
+    <setting id="host_5_port" type="text" label="30022" default="8080" enable="eq(-2,true)" visible="eq(-2,true)" />
+    <setting id="host_5_user" type="text" label="30023" default="" enable="eq(-3,true)" visible="eq(-3,true)" />
+    <setting id="host_5_passwd" option="hidden" type="text" label="30024" default="" enable="eq(-4,true)" visible="eq(-4,true)" />
+    <setting type="sep" visible="eq(-5,true)" />
+
+    <setting id="host_6_enabled" type="bool" label="30015" default="false" />
+    <setting id="host_6_name" type="text" label="30021" default="" enable="eq(-1,true)" visible="eq(-1,true)" />
+    <setting id="host_6_port" type="text" label="30022" default="8080" enable="eq(-2,true)" visible="eq(-2,true)" />
+    <setting id="host_6_user" type="text" label="30023" default="" enable="eq(-3,true)" visible="eq(-3,true)" />
+    <setting id="host_6_passwd" option="hidden" type="text" label="30024" default="" enable="eq(-4,true)" visible="eq(-4,true)" />
+    <setting type="sep" visible="eq(-5,true)" />
+</settings>
