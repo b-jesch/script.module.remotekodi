@@ -91,7 +91,7 @@ class fetchXBMC(object):
             response.close()
 
         except (urllib2.URLError, socket.timeout), e:
-            writeLog('URL Error raised: %s' % getattr(e, 'reason', getattr(e, 'message', None)), xbmc.LOGERROR)
+            writeLog('%s: Error raised: %s' % (self.host, getattr(e, 'reason', getattr(e, 'message', None))), xbmc.LOGERROR)
             self.m_item.update({'icon': get_media_icon('offline')})
 
         return result
