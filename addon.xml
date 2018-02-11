@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
-<addon id="script.module.remotekodi" name="Remote Monitor" provider-name="Birger Jesch" version="0.0.1">
+<addon id="script.module.remotekodi" name="Kodi Remote Monitor" provider-name="Birger Jesch" version="0.0.1">
     <requires>
         <import addon="xbmc.python" version="2.25.0"/>
         <import addon="xbmc.json" version="7.0.0"/>

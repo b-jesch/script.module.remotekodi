@@ -19,7 +19,7 @@ FALLBACK = 'image://%s' % (os.path.join(__path__, 'resources', 'icons', 'fallbac
 
 def get_media_icon(mediatype):
     media = {'nothing': 'power.png', 'audio': 'music.png', 'channel': 'tv.png', 'video': 'movie.png',
-             'offline': 'offline.png'}
+             'movie': 'movie.png', 'offline': 'offline.png'}
     try:
         return os.path.join(__path__, 'resources', 'icons', media[mediatype])
     except AttributeError:
@@ -64,7 +64,7 @@ class fetchXBMC(object):
         self.m_item = {'host': self.host,
                        'label': 'nothing',
                        'thumb': unquote(FALLBACK),
-                       'label2': 'no information',
+                       'label2': 'nothing playing',
                        'icon': get_media_icon('nothing')
                        }
 
@@ -90,15 +90,13 @@ class fetchXBMC(object):
             result = json.loads(response.read().strip()).get('result', None)
             response.close()
 
-        except urllib2.URLError, e:
-            writeLog('URL Error raised: %s' % e.reason, xbmc.LOGERROR)
-
-        except socket.timeout, e:
-            writeLog('Client timed out: %s' % e.message, xbmc.LOGERROR)
+        except (urllib2.URLError, socket.timeout), e:
+            writeLog('URL Error raised: %s' % getattr(e, 'reason', getattr(e, 'message', None)), xbmc.LOGERROR)
+            self.m_item.update({'icon': get_media_icon('offline')})
 
         return result
 
-    def collectItems(self):
+    def collectProperties(self):
         result = device.jsonrpc()
         if result is not None:
 
@@ -119,8 +117,8 @@ if __name__ == '__main__':
     hosts = 0
     for host in range(1, 7, 1):
         if getAddonSetting('host_%s_enabled' % host, sType=BOOL): hosts += 1
-
     writeLog('%s hosts for monitoring enabled' % hosts)
+
     if hosts > 0:
         for host in range(1, 7, 1):
             if getAddonSetting('host_%s_enabled' % host, sType=BOOL):
@@ -134,12 +132,15 @@ if __name__ == '__main__':
                 device.query = {'method': 'Player.GetActivePlayers'}
 
                 id = device.jsonrpc()
-
-                if id is not None and len(id) > 0:
-                    device.query = {'method': 'Player.GetItem',
-                                    'params': {'playerid': id[0].get('playerid', None),
-                                               'properties': ['art']}}
-                    device.collectItems()
+                if id is not None:
+                    if len(id) > 0:
+                        device.query = {'method': 'Player.GetItem',
+                                        'params': {'playerid': id[0].get('playerid', None),
+                                                   'properties': ['art']}}
+                        device.collectProperties()
+                        writeLog('%s: %s is playing' % (device.m_item['host'], device.m_item['label2']))
+                    else:
+                        writeLog('%s: no active player yet' % device.m_item['host'])
                 else:
                     device.m_item.update({'icon': get_media_icon('offline')})
 
