@@ -4,7 +4,8 @@ import urllib2
 import socket
 import os
 import re
-import xbmc, xbmcaddon, xbmcgui
+import sys
+import xbmc, xbmcaddon, xbmcgui, xbmcplugin
 
 # Constants
 
@@ -13,16 +14,18 @@ BOOL = 1
 NUM = 2
 
 __path__ = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('path'))
+__LS__ = xbmcaddon.Addon().getLocalizedString
 
 FALLBACK = 'image://%s' % (os.path.join(__path__, 'resources', 'icons', 'fallback.png/'))
 
 
 def get_media_icon(mediatype):
-    media = {'nothing': 'power.png', 'audio': 'music.png', 'channel': 'tv.png', 'video': 'movie.png',
+    media = {'idle': 'power.png', 'audio': 'music.png', 'channel': 'tv.png', 'video': 'movie.png',
              'movie': 'movie.png', 'offline': 'offline.png'}
     try:
         return os.path.join(__path__, 'resources', 'icons', media[mediatype])
-    except AttributeError:
+    except TypeError:
+        writeLog('Could not get icon for %s' % mediatype, xbmc.LOGERROR)
         return media['offline']
 
 
@@ -45,7 +48,7 @@ def getAddonSetting(setting, sType=STRING, multiplicator=1):
         try:
             return int(re.match('\d+', xbmcaddon.Addon().getSetting(setting)).group()) * multiplicator
         except AttributeError:
-            writeLog('Could not read setting type NUM: %s' %(setting))
+            writeLog('Could not read setting type NUM: %s' % setting, xbmc.LOGERROR)
             return 0
     else:
         return xbmcaddon.Addon().getSetting(setting)
@@ -62,10 +65,10 @@ class fetchXBMC(object):
         self.query = query
 
         self.m_item = {'host': self.host,
-                       'label': 'nothing',
+                       'label': 'idle',
                        'thumb': unquote(FALLBACK),
-                       'label2': 'nothing playing',
-                       'icon': get_media_icon('nothing')
+                       'label2': __LS__(30030),
+                       'icon': get_media_icon('idle')
                        }
 
     def jsonrpc(self):
@@ -114,6 +117,17 @@ class fetchXBMC(object):
 
 if __name__ == '__main__':
 
+    args = sys.argv
+    handle = None
+
+    if len(args) > 1:
+
+        if args[0][0:6] == 'plugin':
+            writeLog('calling module as plugin source')
+            handle = int(args[1])
+            args.pop(0)
+            args[1] = args[1][1:]
+    
     hosts = 0
     for host in range(1, 7, 1):
         if getAddonSetting('host_%s_enabled' % host, sType=BOOL): hosts += 1
@@ -142,8 +156,14 @@ if __name__ == '__main__':
                     else:
                         writeLog('%s: no active player yet' % device.m_item['host'])
                 else:
+                    writeLog('%s seems to be offline' % host_name)
                     device.m_item.update({'icon': get_media_icon('offline')})
 
                 wid = xbmcgui.ListItem(label=device.m_item['host'],
                                        label2=device.m_item['label2'], iconImage=device.m_item['icon'])
                 wid.setArt({'thumb': device.m_item['thumb']})
+                if handle is not None: xbmcplugin.addDirectoryItem(handle=handle, url='', listitem=wid)
+
+            if handle is not None:
+                xbmcplugin.endOfDirectory(handle=handle, updateListing=True)
+                xbmc.executebuiltin('Container.Refresh')
