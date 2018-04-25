@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+	<include name="WidgetListRemotes">
+		<param name="item_limit">15</param>
+		<!-- <param name="icon">$INFO[ListItem.Icon]</param>
+		<param name="label">$INFO[ListItem.Label]</param>
+		<param name="label2">$INFO[ListItem.Title]</param> -->
+		<definition>
+			<include content="CategoryLabel">
+				<param name="label">$PARAM[widget_header]</param>
+				<param name="list_id" value="$PARAM[list_id]"/>
+			</include>
+			<include content="BusyListSpinner">
+				<param name="list_id" value="$PARAM[list_id]"/>
+				<param name="posy" value="200"/>
+			</include>
+			<control type="panel" id="$PARAM[list_id]">
+				<left>-13</left>
+				<top>120</top>
+				<right>0</right>
+				<height>430</height>
+				<include content="WidgetListCommon">
+					<param name="list_id" value="$PARAM[list_id]"/>
+				</include>
+				<visible>Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating</visible>
+				<param name="list_id" value="$PARAM[list_id]"/>
+				<itemlayout width="320" height="450">
+					<control type="group">
+						<left>70</left>
+						<control type="image">
+							<width>320</width>
+							<height>290</height>
+							<texture colordiffuse="$VAR[BorderColorVar]">dialogs/dialog-bg-nobo.png</texture>
+							<bordertexture border="21">overlays/shadow.png</bordertexture>
+							<bordersize>20</bordersize>
+						</control>
+						<control type="image">
+							<width>320</width>
+							<height>290</height>
+							<texture colordiffuse="$VAR[BorderColorVar]">dialogs/border-movielayout.png</texture>
+							<bordertexture border="21">overlays/shadow.png</bordertexture>
+							<bordersize>20</bordersize>
+							<visible>Skin.HasSetting(show_borders)</visible>
+						</control>
+						<control type="image">
+							<top>30</top>
+							<left>30</left>
+							<width>260</width>
+							<height>150</height>
+							<texture fallback="DefaultTVShows.png">$INFO[ListItem.Icon]</texture>
+							<aspectratio>keep</aspectratio>
+							<aligny>top</aligny>
+						</control>
+						<control type="image">
+							<left>30</left>
+							<top>30</top>
+							<width>180</width>
+							<height>60</height>
+							<texture>$INFO[ListItem.Property(thumb)]</texture>
+						</control>
+						<control type="label">
+							<left>30</left>
+							<top>190</top>
+							<width>260</width>
+							<height>30</height>
+							<label>$PARAM[label]</label>
+							<font>font09</font>
+							<shadowcolor>text_shadow</shadowcolor>
+							<aligny>top</aligny>
+							<align>center</align>
+						</control>
+						<control type="label">
+							<left>30</left>
+							<top>220</top>
+							<width>260</width>
+							<height>30</height>
+							<label>$PARAM[label2]</label>
+							<font>font09</font>
+							<shadowcolor>text_shadow</shadowcolor>
+							<aligny>top</aligny>
+							<align>center</align>
+						</control>
+					</control>
+				</itemlayout>
+				<focusedlayout width="320" height="450">
+					<control type="group">
+						<depth>DepthContentPopout</depth>
+						<left>70</left>
+						<animation type="Focus">
+							<effect type="zoom" start="100" end="110" time="200" tween="sine" easing="inout" center="240,100" />
+						</animation>
+						<animation type="Unfocus">
+							<effect type="zoom" start="110" end="100" time="200" tween="sine" easing="inout" center="240,100" />
+						</animation>
+						<control type="image">
+							<width>320</width>
+							<height>290</height>
+							<texture>dialogs/dialog-bg-nobo.png</texture>
+							<bordertexture border="21">overlays/shadow.png</bordertexture>
+							<bordersize>20</bordersize>
+						</control>
+						<control type="image">
+							<width>320</width>
+							<height>290</height>
+							<texture colordiffuse="button_focus">colors/grey.png</texture>
+							<bordersize>20</bordersize>
+							<include>Animation_FocusTextureFade</include>
+						</control>
+						<control type="image">
+							<top>30</top>
+							<left>30</left>
+							<width>260</width>
+							<height>150</height>
+							<texture fallback="DefaultTVShows.png">$INFO[ListItem.Icon]</texture>
+							<aspectratio>keep</aspectratio>
+							<aligny>top</aligny>
+						</control>
+						<control type="image">
+							<left>30</left>
+							<top>30</top>
+							<width>180</width>
+							<height>60</height>
+							<texture>$INFO[ListItem.Property(thumb)]</texture>
+						</control>
+						<control type="label">
+							<left>30</left>
+							<top>190</top>
+							<width>260</width>
+							<height>30</height>
+							<label>$PARAM[label]</label>
+							<font>font09</font>
+							<shadowcolor>text_shadow</shadowcolor>
+							<aligny>top</aligny>
+							<align>center</align>
+						</control>
+						<control type="label">
+							<left>30</left>
+							<top>220</top>
+							<width>260</width>
+							<height>30</height>
+							<label>$PARAM[label2]</label>
+							<font>font09</font>
+							<shadowcolor>text_shadow</shadowcolor>
+							<aligny>top</aligny>
+							<align>center</align>
+						</control>
+					</control>
+				</focusedlayout>
+				<content target="$PARAM[widget_target]" limit="$PARAM[item_limit]">$PARAM[content_path]</content>
+				<onclick>RunScript(script.service.gto,action=infopopup&amp;blob=$INFO[ListItem.Property(BlobID)])</onclick>
+			</control>
+		</definition>
+	</include>
+</includes>

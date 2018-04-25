@@ -66,3 +66,7 @@ msgstr ""
 msgctxt "#30030"
 msgid "System is idle"
 msgstr ""
+
+msgctxt "#30031"
+msgid "System is offline"
+msgstr ""

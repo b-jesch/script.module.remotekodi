@@ -9,24 +9,26 @@ import xbmc, xbmcaddon, xbmcgui, xbmcplugin
 
 # Constants
 
+ADDON = xbmcaddon.Addon()
+
 STRING = 0
 BOOL = 1
 NUM = 2
 
-__path__ = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('path'))
-__LS__ = xbmcaddon.Addon().getLocalizedString
+__path__ = xbmc.translatePath(ADDON.getAddonInfo('path'))
+__LS__ = ADDON.getLocalizedString
 
 FALLBACK = 'image://%s' % (os.path.join(__path__, 'resources', 'icons', 'fallback.png/'))
 
 
-def get_media_icon(mediatype):
+def get_media_symbol(mediatype):
     media = {'idle': 'power.png', 'audio': 'music.png', 'channel': 'tv.png', 'video': 'movie.png',
-             'movie': 'movie.png', 'offline': 'offline.png'}
+             'movie': 'movie.png', 'episode': 'video.png', 'offline': 'offline.png'}
     try:
         return os.path.join(__path__, 'resources', 'icons', media[mediatype])
-    except TypeError:
+    except (TypeError, KeyError):
         writeLog('Could not get icon for %s' % mediatype, xbmc.LOGERROR)
-        return media['offline']
+        return os.path.join(__path__, 'resources', 'icons', media['offline'])
 
 
 def strToBool(par):
@@ -37,21 +39,21 @@ def unquote(image_url):
     return urllib2.unquote(image_url.split('://', 1)[1][:-1])
 
 def writeLog(message, level=xbmc.LOGDEBUG):
-    xbmc.log('[%s %s]: %s' % (xbmcaddon.Addon().getAddonInfo('id'),
-                              xbmcaddon.Addon().getAddonInfo('version'), message.encode('utf-8')), level)
+    xbmc.log('[%s %s]: %s' % (ADDON.getAddonInfo('id'),
+                              ADDON.getAddonInfo('version'), message.encode('utf-8')), level)
 
 
 def getAddonSetting(setting, sType=STRING, multiplicator=1):
     if sType == BOOL:
-        return strToBool(xbmcaddon.Addon().getSetting(setting))
+        return strToBool(ADDON.getSetting(setting))
     elif sType == NUM:
         try:
-            return int(re.match('\d+', xbmcaddon.Addon().getSetting(setting)).group()) * multiplicator
+            return int(re.match('\d+', ADDON.getSetting(setting)).group()) * multiplicator
         except AttributeError:
             writeLog('Could not read setting type NUM: %s' % setting, xbmc.LOGERROR)
             return 0
     else:
-        return xbmcaddon.Addon().getSetting(setting)
+        return ADDON.getSetting(setting)
 
 
 class fetchXBMC(object):
@@ -68,7 +70,7 @@ class fetchXBMC(object):
                        'label': 'idle',
                        'thumb': unquote(FALLBACK),
                        'label2': __LS__(30030),
-                       'icon': get_media_icon('idle')
+                       'symbol': get_media_symbol('idle')
                        }
 
     def jsonrpc(self):
@@ -95,7 +97,6 @@ class fetchXBMC(object):
 
         except (urllib2.URLError, socket.timeout), e:
             writeLog('%s: Error raised: %s' % (self.host, getattr(e, 'reason', getattr(e, 'message', None))), xbmc.LOGERROR)
-            self.m_item.update({'icon': get_media_icon('offline')})
 
         return result
 
@@ -110,10 +111,10 @@ class fetchXBMC(object):
                             symbol.get('thumb', symbol.get('fanart',
                             symbol.get('poster', FALLBACK)))))
 
-            device.m_item.update({'thumb': thumb})
-            device.m_item.update({'label': result.get('item')['type']})
-            device.m_item.update({'icon': get_media_icon(result.get('item')['type'])})
-            device.m_item.update({'label2': result.get('item')['label']})
+            self.m_item.update({'thumb': thumb})
+            self.m_item.update({'label': result.get('item')['type']})
+            self.m_item.update({'symbol': get_media_symbol(result.get('item')['type'])})
+            self.m_item.update({'label2': result.get('item')['label']})
 
 if __name__ == '__main__':
 
@@ -153,17 +154,18 @@ if __name__ == '__main__':
                                                    'properties': ['art']}}
                         device.collectProperties()
                         writeLog('%s: %s is playing' % (device.m_item['host'], device.m_item['label2']))
+                        writeLog(str(device.m_item))
                     else:
                         writeLog('%s: no active player yet' % device.m_item['host'])
                 else:
                     writeLog('%s seems to be offline' % host_name)
-                    device.m_item.update({'icon': get_media_icon('offline')})
+                    device.m_item.update({'symbol': get_media_symbol('offline'), 'label2': __LS__(30031)})
 
                 wid = xbmcgui.ListItem(label=device.m_item['host'],
-                                       label2=device.m_item['label2'], iconImage=device.m_item['icon'])
-                wid.setArt({'thumb': device.m_item['thumb']})
+                                       label2=device.m_item['label2'], iconImage=device.m_item['thumb'])
+                wid.setProperty('thumb', device.m_item['symbol'])
                 if handle is not None: xbmcplugin.addDirectoryItem(handle=handle, url='', listitem=wid)
 
-            if handle is not None:
-                xbmcplugin.endOfDirectory(handle=handle, updateListing=True)
-                xbmc.executebuiltin('Container.Refresh')
+        if handle is not None:
+            xbmcplugin.endOfDirectory(handle=handle, updateListing=True)
+            xbmc.executebuiltin('Container.Refresh')

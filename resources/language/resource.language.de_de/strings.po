@@ -25,27 +25,27 @@ msgstr "Kodi Remote Monitor"
 
 msgctxt "#30010"
 msgid "Remote Host #1 enabled"
-msgstr "Remote Host #1 aktiv"
+msgstr "Monitoring Remote Host #1"
 
 msgctxt "#30011"
 msgid "Remote Host #2 enabled"
-msgstr "Remote Host #2 aktiv"
+msgstr "Monitoring Remote Host #2"
 
 msgctxt "#30012"
 msgid "Remote Host #3 enabled"
-msgstr "Remote Host #3 aktiv"
+msgstr "Monitoring Remote Host #3"
 
 msgctxt "#30013"
 msgid "Remote Host #4 enabled"
-msgstr "Remote Host #4 aktiv"
+msgstr "Monitoring Remote Host #4"
 
 msgctxt "#30014"
 msgid "Remote Host #5 enabled"
-msgstr "Remote Host #5 aktiv"
+msgstr "Monitoring Remote Host #5"
 
 msgctxt "#30015"
 msgid "Remote Host #6 enabled"
-msgstr "Remote Host #6 aktiv"
+msgstr "Monitoring Remote Host #6"
 
 msgctxt "#30021"
 msgid "Host Name or IP Address"
@@ -66,3 +66,7 @@ msgstr "Passwort"
 msgctxt "#30030"
 msgid "System is idle"
 msgstr "System ist inaktiv"
+
+msgctxt "#30031"
+msgid "System is offline"
+msgstr "System ist offline"
